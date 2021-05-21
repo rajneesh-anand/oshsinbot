@@ -9,7 +9,7 @@ let Bot = require('@kikinteractive/kik');
 // We are first gonna create a new bot object with all of 
 // the information we just filled in on dev.kik.com
 let bot = new Bot({
-    username: 'OshSin', // The username you gave BotsWorth on Kik 
+    username: 'oshsin', // The username you gave BotsWorth on Kik 
     apiKey: 'd15aa586-a0d7-45a7-b0a2-5e343ba36b77', // The API Key you can find on your profile on dev.kik.com
     baseUrl: 'https://oshsinbot.herokuapp.com/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
 });
@@ -29,14 +29,33 @@ bot.onTextMessage((message) => {
     console.log(message.body);
 });
 
+bot.send(Bot.Message.picture('http://i.imgur.com/oalyVlU.jpg')
+    .setAttributionName('Imgur')
+    .setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
+    'a.username');
+
+
+
+
+bot.onScanDataMessage((message) => {
+
+    // We take the message and call the reply method with the body of the message we recieved 
+    // this is the "echo" functionality of our bot 
+    message.reply(message.body);
+
+    // print out the message so we can see on the server what's being sent 
+    console.log(message.body);
+});
 // We want to set up our start chatting message. This will be the first message the user gets when they start 
 // chatting with your bot. This message is only sent once. 
 bot.onStartChattingMessage((message) => {
     bot.getUserProfile(message.from)
         .then((user) => {
-            message.reply(`Hey ${user.firstName}! I'm your new echo bot. Send me a message and I'll send it right back!`);
+            message.reply(`Hey ${user.firstName}! Send me a message and I'll send it right back!`);
         });
 });
+
+bot.onScanDataMessage
 
 // Set up your server and start listening
 let server = http
