@@ -1,0 +1,16 @@
+{
+  "name": "kikbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "echobot.js",
+  "dependencies": {
+    "@kikinteractive/kik": "^2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node echobot.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
