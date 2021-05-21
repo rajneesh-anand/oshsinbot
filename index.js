@@ -9,7 +9,7 @@ let Bot = require('@kikinteractive/kik');
 // We are first gonna create a new bot object with all of 
 // the information we just filled in on dev.kik.com
 let bot = new Bot({
-    username: 'oshsin', // The username you gave BotsWorth on Kik 
+    username: 'OshSin', // The username you gave BotsWorth on Kik 
     apiKey: 'd15aa586-a0d7-45a7-b0a2-5e343ba36b77', // The API Key you can find on your profile on dev.kik.com
     baseUrl: 'https://oshsinbot.herokuapp.com/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
 });
