@@ -46,6 +46,38 @@ bot.onScanDataMessage((message) => {
     // print out the message so we can see on the server what's being sent 
     console.log(message.body);
 });
+
+
+bot.onPictureMessage((message) => {
+
+    // We take the message and call the reply method with the body of the message we recieved 
+    // this is the "echo" functionality of our bot 
+    message.reply(message.body);
+
+    // print out the message so we can see on the server what's being sent 
+    console.log(message.body);
+});
+
+
+bot.onStickerMessage((message) => {
+
+    // We take the message and call the reply method with the body of the message we recieved 
+    // this is the "echo" functionality of our bot 
+    message.reply(message.body);
+
+    // print out the message so we can see on the server what's being sent 
+    console.log(message.body);
+});
+
+bot.onLinkMessage((message) => {
+
+    // We take the message and call the reply method with the body of the message we recieved 
+    // this is the "echo" functionality of our bot 
+    message.reply(message.body);
+
+    // print out the message so we can see on the server what's being sent 
+    console.log(message.body);
+});
 // We want to set up our start chatting message. This will be the first message the user gets when they start 
 // chatting with your bot. This message is only sent once. 
 bot.onStartChattingMessage((message) => {
@@ -55,12 +87,23 @@ bot.onStartChattingMessage((message) => {
         });
 });
 
-bot.onScanDataMessage
 
+bot.onVideoMessage((message) => {
+
+    // We take the message and call the reply method with the body of the message we recieved 
+    // this is the "echo" functionality of our bot 
+    message.reply(message.body);
+
+    // print out the message so we can see on the server what's being sent 
+    console.log(message.body);
+});
+
+
+let PORT = process.env.PORT || 8080
 // Set up your server and start listening
 let server = http
     .createServer(bot.incoming())
-    .listen(8000, (err) => {
+    .listen(PORT, (err) => {
         if (err) {
             return console.log('something bad happened', err)
         }
