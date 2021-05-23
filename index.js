@@ -9,7 +9,7 @@ const request = require("request")
 let bot = new Bot({
     username: 'oshsin', // The username you gave BotsWorth on Kik 
     apiKey: 'd15aa586-a0d7-45a7-b0a2-5e343ba36b77', // The API Key you can find on your profile on dev.kik.com
-    baseUrl: 'https://22adfd582f23.ngrok.io/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
+    baseUrl: 'https://oshsinbot.herokuapp.com/incoming' //       https://22adfd582f23.ngrok.io/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
 });
 
 // Send the configuration to kik to update the bot with the information above
