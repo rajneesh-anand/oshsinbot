@@ -76,7 +76,90 @@ bot.onTextMessage((message) => {
             console.log(` ${res.statusCode} === ${res.statusMessage}`)
               
         });
-    } else {
+    } 
+    else if(message.body === "PET" || message.body === "Pet" || message.body === "pet"){
+
+        request.post({
+            url: "https://api.kik.com/v1/message",
+            auth: {
+                user: "oshsin",
+                pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77"
+            },
+            json: {
+                "messages": [
+                    {
+                       
+                        "type": "picture",
+                        "to": message.from,
+                        "picUrl": "http://i.imgur.com/iU3p0AN.png",
+                        "attribution": "camera"
+                    }
+                ]
+            }
+        }, function(err, res, body) { 
+            if (err) {
+                console.log(`Error Info - ${err}`);
+            }    
+            console.log(` ${res.statusCode} === ${res.statusMessage}`)
+              
+        });
+    } 
+    else if(message.body === "KSLAYDHER" || message.body === "Kslaydher" || message.body === "Kslaydher"){
+
+        request.post({
+            url: "https://api.kik.com/v1/message",
+            auth: {
+                user: "oshsin",
+                pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77"
+            },
+            json: {
+                "messages": [
+                    {
+                       
+                        "type": "picture",
+                        "to": message.from,
+                        "picUrl": "http://i.imgur.com/0rlO2DI.png",
+                        "attribution": "camera"
+                    }
+                ]
+            }
+        }, function(err, res, body) { 
+            if (err) {
+                console.log(`Error Info - ${err}`);
+            }    
+            console.log(` ${res.statusCode} === ${res.statusMessage}`)
+              
+        });
+    } 
+    else if(message.body === "Angel" || message.body === "ANGEL" || message.body === "angel"){
+
+        request.post({
+            url: "https://api.kik.com/v1/message",
+            auth: {
+                user: "oshsin",
+                pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77"
+            },
+            json: {
+                "messages": [
+                    {
+                       
+                        "type": "picture",
+                        "to": message.from,
+                        "picUrl": "http://i.imgur.com/zDmcfew.png",
+                        "attribution": "camera"
+                    }
+                ]
+            }
+        }, function(err, res, body) { 
+            if (err) {
+                console.log(`Error Info - ${err}`);
+            }    
+            console.log(` ${res.statusCode} === ${res.statusMessage}`)
+              
+        });
+    } 
+    
+    else {
 
     request.post({
         url: "https://api.kik.com/v1/message",
@@ -216,7 +299,7 @@ bot.onLinkMessage((message) => {
 
 bot.onStartChattingMessage((message) => {
     bot.getUserProfile(message.from).then((user) => {
-        message.reply(`Hey ${user.firstName}. Nice to meet you . I hope you are doing good. Send me a message and I'll send it right back`);
+        message.reply(`Hey ${user.firstName}. Nice to meet you. I hope this message finds you well. Send me a message and I'll send it right back.`);
     })
 });
 
