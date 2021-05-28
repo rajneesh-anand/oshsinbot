@@ -118,7 +118,7 @@ bot.onTextMessage((message) => {
                        
                         "type": "picture",
                         "to": message.from,
-                        "picUrl": "http://i.imgur.com/0rlO2DI.png",
+                        "picUrl": "https://i.imgur.com/0rIO2Dl.png",
                         "attribution": "camera"
                     }
                 ]
@@ -159,6 +159,10 @@ bot.onTextMessage((message) => {
         });
     } 
     else if(message.body === "Bye" || message.body === "bye" || message.body === "BYE") {
+        var name ;
+        bot.getUserProfile(message.from).then((user) => {
+           name = user.firstName
+        })
 
         request.post({
             url: "https://api.kik.com/v1/message",
@@ -169,7 +173,7 @@ bot.onTextMessage((message) => {
             json: {
                 "messages": [
                     {
-                        "body": "You guys are awesome. Stay safe and be healthy ", 
+                        "body": `You are awesome ${name}. Stay Safe and be Healthy `, 
                         "to":message.from, 
                         "type": "text", 
                        
