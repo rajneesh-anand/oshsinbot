@@ -158,6 +158,33 @@ bot.onTextMessage((message) => {
               
         });
     } 
+    else if(message.body === "Bye" || message.body === "bye" || message.body === "BYE") {
+
+        request.post({
+            url: "https://api.kik.com/v1/message",
+            auth: {
+                user: "oshsin",
+                pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77"
+            },
+            json: {
+                "messages": [
+                    {
+                        "body": "You guys are awesome. Stay safe and be healthy ", 
+                        "to":message.from, 
+                        "type": "text", 
+                       
+                    }
+                ]
+            }
+        }, function(err, res, body) { 
+            if (err) {
+                console.log(`Error Info - ${err}`);
+            }    
+            console.log(` ${res.statusCode} === ${res.statusMessage}`)
+              
+        });
+    }
+
     
     else {
 
