@@ -18,9 +18,9 @@ bot.updateBotConfiguration();
 
 bot.onTextMessage((message) => {
    
-    bot.getUserProfile(message.from).then((user) => {      
-        console.log(`${message.from} === ${user.firstName} ${user.lastName}`);
-    })
+    // bot.getUserProfile(message.from).then((user) => {      
+    //     console.log(`${message.from} === ${user.firstName} ${user.lastName}`);
+    // })
 
    
 
@@ -159,10 +159,9 @@ bot.onTextMessage((message) => {
         });
     } 
     else if(message.body === "Bye" || message.body === "bye" || message.body === "BYE") {
-        var name ;
-        bot.getUserProfile(message.from).then((user) => {
-           name = user.firstName
-        })
+      
+        bot.getUserProfile(message.from).then((user) => {  
+       
 
         request.post({
             url: "https://api.kik.com/v1/message",
@@ -173,7 +172,7 @@ bot.onTextMessage((message) => {
             json: {
                 "messages": [
                     {
-                        "body": `You are awesome ${name}. Stay Safe and be Healthy `, 
+                        "body": `You are awesome ${user.firstName}. Stay Safe and Be Healthy `, 
                         "to":message.from, 
                         "type": "text", 
                        
@@ -187,7 +186,9 @@ bot.onTextMessage((message) => {
             console.log(` ${res.statusCode} === ${res.statusMessage}`)
               
         });
+    })
     }
+
 
     
     else {
