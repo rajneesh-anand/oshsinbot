@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "question": "What singer has had a Billboard No. 1 hit in each of the last four decades? \n\n Pick the Options \n\n(1) Brian Wilson\n(2) Mariah Carey\n(3) Georg Solti\n(4) Aretha Franklin",
+    "answer": "2-Mariah Carey"
+  },
+  {
+    "id": 2,
+    "question": "Which member of the Avengers had a brief stint as a pop star ? \n\n Pick the Options \n\n(1) Brie Larson\n(2) Johnny Cash\n(3) John Mayer\n(4) Mariah Carey",
+    "answer": "1-Brie Larson"
+  },
+  {
+    "id": 3,
+    "question": "Who was the first woman ever inducted into the Rock and Roll Hall of Fame ? \n\n Pick the Options \n \n(1) Mariah Carey \n(2) Britney Spears\n(3) \n(4) Madonna",
+    "answer": "3-Aretha Franklin"
+  },
+  {
+    "id": 4,
+    "question": "Who, to date, has won the most Grammys of all time ? \n\n Pick the Options \n\n(1) Marvin Gaye\n(2) Georg Solti\n(3) John Mayer\n(4) Brian Wilson",
+    "answer": "2-Georg Solti"
+  },
+  {
+    "id": 5,
+    "question": "What artists recorded two of their bestselling albums while they were behind bars ? \n\n Pick the Options \n\n(1) Brian Wilson \n(2) Jackie Fox\n(3) Bernie Taupin\n(4) Johnny Cash",
+    "answer": "4-Johnny Cash"
+  }
+]

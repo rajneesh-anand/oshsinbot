@@ -1,18 +1,21 @@
 "use strict";
 
-let util = require("util");
-let http = require("http");
-let Bot = require("@kikinteractive/kik");
+const util = require("util");
+const http = require("http");
+const Bot = require("@kikinteractive/kik");
 const request = require("request");
+const fs = require("fs");
 
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
-  apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77", // The API Key you can find on your profile on dev.kik.com
-  baseUrl: "https://oshsinbot.herokuapp.com/incoming", //       https://22adfd582f23.ngrok.io/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running
+  apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+  baseUrl: "https://oshsinbot.herokuapp.com/incoming",
 });
 
 // Send the configuration to kik to update the bot with the information above
 bot.updateBotConfiguration();
+var answer_number = "";
+var answer_name = "";
 
 bot.onTextMessage((message) => {
   if (
@@ -50,12 +53,16 @@ bot.onTextMessage((message) => {
     message.body === "MUSIC" ||
     message.body === "music"
   ) {
-    let quiz_number = Math.floor(Math.random() * 11);
-    let readQuiz = fs.readFileSync("allQuizzes.json", "utf8");
+    let quiz_number = Math.floor(Math.random() * 6);
+    let readQuiz = fs.readFileSync("music.json", "utf8");
     var jsonContent = JSON.parse(readQuiz);
 
-    let quiz_name = jsonContent[quiz_number]["title"];
+    let quiz_name = jsonContent[quiz_number]["question"];
+    answer_number = jsonContent[quiz_number]["answer"].split("-")[0];
+    answer_name = jsonContent[quiz_number]["answer"].split("-")[1];
     console.log(quiz_name);
+    console.log(answer_name);
+    console.log(answer_number);
 
     // for (var i = 0; i < jsonContent.length; i++) {
     //   titles[i] = jsonContent[i]["title"];
@@ -85,11 +92,7 @@ bot.onTextMessage((message) => {
         console.log(` ${res.statusCode} === ${res.statusMessage}`);
       }
     );
-  } else if (
-    message.body === "PET" ||
-    message.body === "Pet" ||
-    message.body === "pet"
-  ) {
+  } else if (message.body == answer_number || message.body === answer_name) {
     request.post(
       {
         url: "https://api.kik.com/v1/message",
@@ -100,10 +103,42 @@ bot.onTextMessage((message) => {
         json: {
           messages: [
             {
-              type: "picture",
+              type: "video",
               to: message.from,
-              picUrl: "http://i.imgur.com/iU3p0AN.png",
-              attribution: "camera",
+              videoUrl: "https://i.imgur.com/5VFTSZG.mp4",
+              autoplay: true,
+              loop: true,
+
+              //   attribution: "camera",
+            },
+          ],
+        },
+      },
+      function (err, res, body) {
+        if (err) {
+          console.log(`Error Info - ${err}`);
+        }
+        console.log(` ${res.statusCode} === ${res.statusMessage}`);
+      }
+    );
+  } else if (message.body != "Bye" && message.body != answer_number) {
+    request.post(
+      {
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+        },
+        json: {
+          messages: [
+            {
+              type: "video",
+              to: message.from,
+              videoUrl: "https://i.imgur.com/ED5InCq.mp4",
+              autoplay: true,
+              loop: true,
+
+              //   attribution: "camera",
             },
           ],
         },
@@ -191,7 +226,7 @@ bot.onTextMessage((message) => {
           json: {
             messages: [
               {
-                body: `You are awesome ${user.firstName}. Stay Safe and Be Healthy `,
+                body: `You are awesome ${user.firstName} :) \n Stay Safe and Be Healthy \n Best Wishes from Oshoa ..... `,
                 to: message.from,
                 type: "text",
               },
@@ -217,7 +252,7 @@ bot.onTextMessage((message) => {
         json: {
           messages: [
             {
-              body: message.body,
+              body: "Hello" + "<br>" + message.body,
               to: message.from,
               type: "text",
             },
@@ -236,7 +271,6 @@ bot.onTextMessage((message) => {
 
 bot.onScanDataMessage((message) => {
   message.reply(message.body);
-
   console.log(message.body);
 });
 
@@ -390,59 +424,3 @@ let server = http.createServer(bot.incoming()).listen(PORT, (err) => {
 
   console.log(`Server is listening on port ${PORT}`);
 });
-
-// 'use strict';
-
-// // We are gonna need to import the http library and the kikBot SDK
-// // so that we can use them to make our bot work
-// let util = require('util');
-// let http = require('http');
-// let Bot = require('@kikinteractive/kik');
-
-// // We are first gonna create a new bot object with all of
-// // the information we just filled in on dev.kik.com
-// let bot = new Bot({
-//     username: 'oshsin', // The username you gave BotsWorth on Kik
-//     apiKey: 'd15aa586-a0d7-45a7-b0a2-5e343ba36b77', // The API Key you can find on your profile on dev.kik.com
-//     baseUrl: 'https://fa4552053a97.ngrok.io/incoming' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running
-// });
-
-// // Send the configuration to kik to update the bot with the information above
-// bot.updateBotConfiguration();
-
-// // The onTextMessage(message) handler. This is run everytime your bot gets a message.
-// // The method takes a message object as a parameter.
-// bot.onTextMessage((message) => {
-
-//     // We take the message and call the reply method with the body of the message we recieved
-//     // this is the "echo" functionality of our bot
-//     message.reply(message.body);
-
-//     // print out the message so we can see on the server what's being sent
-//     console.log(message.body);
-// });
-
-// bot.send(Bot.Message.picture('http://i.imgur.com/oalyVlU.jpg')
-//     .setAttributionName('Imgur')
-//     .setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
-//     'a.username');
-
-// // We want to set up our start chatting message. This will be the first message the user gets when they start
-// // chatting with your bot. This message is only sent once.
-// bot.onStartChattingMessage((message) => {
-//     bot.getUserProfile(message.from)
-//         .then((user) => {
-//             message.reply(`Hey ${user.firstName}! I'm your new echo bot. Send me a message and I'll send it right back!`);
-//         });
-// });
-
-// // Set up your server and start listening
-// let server = http
-//     .createServer(bot.incoming())
-//     .listen(8000, (err) => {
-//         if (err) {
-//             return console.log('something bad happened', err)
-//         }
-
-//         console.log(`server is listening on 8000`)
-//     });
