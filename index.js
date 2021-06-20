@@ -9,7 +9,6 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
 const cloudinary = require("cloudinary");
-
 cloudinary.config({
   cloud_name: "dlywo5mxn",
   api_key: "436327778941833",
@@ -24,6 +23,15 @@ let bot = new Bot({
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
   baseUrl: "https://kikbot-idleminds.azurewebsites.net/incoming",
 });
+
+// Chat array
+
+const chatArray = [
+  { q: "Hi", a: "Hey, What's up ?" },
+  { q: "hi", a: "Hey, What's up ?" },
+  { q: "Hello", a: "Hey, What's up ?" },
+  { q: "hello", a: "Hey, What's up ?" },
+];
 
 // Send the configuration to kik to update the bot with the information above
 bot.updateBotConfiguration();
@@ -52,6 +60,7 @@ bot.onTextMessage((message) => {
     .catch(function (error) {
       console.error(error);
     });
+
   if (
     message.body === "Dog" ||
     message.body === "DOG" ||
@@ -77,9 +86,8 @@ bot.onTextMessage((message) => {
       },
       function (err, res, body) {
         if (err) {
-          console.log(`Error Info - ${err}`);
+          console.log(err);
         }
-        console.log(`${res.statusCode} === ${res.statusMessage}`);
       }
     );
   } else if (
@@ -94,13 +102,6 @@ bot.onTextMessage((message) => {
     let quiz_name = jsonContent[quiz_number]["question"];
     answer_number = jsonContent[quiz_number]["answer"].split("-")[0];
     answer_name = jsonContent[quiz_number]["answer"].split("-")[1];
-    console.log(quiz_name);
-    console.log(answer_name);
-    console.log(answer_number);
-
-    // for (var i = 0; i < jsonContent.length; i++) {
-    //   titles[i] = jsonContent[i]["title"];
-    // }
 
     request.post(
       {
@@ -121,9 +122,8 @@ bot.onTextMessage((message) => {
       },
       function (err, res, body) {
         if (err) {
-          console.log(`Error Info - ${err}`);
+          console.log(err);
         }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
       }
     );
   } else if (message.body == answer_number || message.body === answer_name) {
@@ -142,6 +142,7 @@ bot.onTextMessage((message) => {
               videoUrl: "https://i.imgur.com/5VFTSZG.mp4",
               autoplay: true,
               loop: true,
+              muted: false,
 
               //   attribution: "camera",
             },
@@ -150,9 +151,8 @@ bot.onTextMessage((message) => {
       },
       function (err, res, body) {
         if (err) {
-          console.log(`Error Info - ${err}`);
+          console.log(err);
         }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
       }
     );
   } else if (message.body != "Bye" && message.body != answer_number) {
@@ -171,6 +171,7 @@ bot.onTextMessage((message) => {
               videoUrl: "https://i.imgur.com/ED5InCq.mp4",
               autoplay: true,
               loop: true,
+              muted: false,
 
               //   attribution: "camera",
             },
@@ -179,102 +180,10 @@ bot.onTextMessage((message) => {
       },
       function (err, res, body) {
         if (err) {
-          console.log(`Error Info - ${err}`);
+          console.log(err);
         }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
       }
     );
-  } else if (
-    message.body === "KSLAYDHER" ||
-    message.body === "Kslaydher" ||
-    message.body === "Kslaydher"
-  ) {
-    request.post(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              type: "picture",
-              to: message.from,
-              picUrl: "https://i.imgur.com/0rIO2Dl.png",
-              attribution: "camera",
-            },
-          ],
-        },
-      },
-      function (err, res, body) {
-        if (err) {
-          console.log(`Error Info - ${err}`);
-        }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
-      }
-    );
-  } else if (
-    message.body === "Angel" ||
-    message.body === "ANGEL" ||
-    message.body === "angel"
-  ) {
-    request.post(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              type: "picture",
-              to: message.from,
-              picUrl: "http://i.imgur.com/zDmcfew.png",
-              attribution: "camera",
-            },
-          ],
-        },
-      },
-      function (err, res, body) {
-        if (err) {
-          console.log(`Error Info - ${err}`);
-        }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
-      }
-    );
-  } else if (
-    message.body === "Bye" ||
-    message.body === "bye" ||
-    message.body === "BYE"
-  ) {
-    bot.getUserProfile(message.from).then((user) => {
-      request.post(
-        {
-          url: "https://api.kik.com/v1/message",
-          auth: {
-            user: "oshsin",
-            pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-          },
-          json: {
-            messages: [
-              {
-                body: `You are awesome ${user.firstName} :) \n Stay Safe and Be Healthy \n Best Wishes from Oshoa ..... `,
-                to: message.from,
-                type: "text",
-              },
-            ],
-          },
-        },
-        function (err, res, body) {
-          if (err) {
-            console.log(`Error Info - ${err}`);
-          }
-          console.log(` ${res.statusCode} === ${res.statusMessage}`);
-        }
-      );
-    });
   } else {
     request.post(
       {
@@ -509,12 +418,11 @@ bot.onVideoMessage((message) => {
   );
 });
 
-let PORT = process.env.PORT || 8080;
+let PORT = process.env.PORT;
 
-let server = http.createServer(bot.incoming()).listen(PORT, (err) => {
+http.createServer(bot.incoming()).listen(PORT, (err) => {
   if (err) {
     return console.log("something bad happened", err);
   }
-
   console.log(`Server is listening on port ${PORT}`);
 });
