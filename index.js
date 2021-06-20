@@ -21,16 +21,28 @@ cloudinary.config({
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-  baseUrl: "https://kikbot-idleminds.azurewebsites.net/incoming",
+  baseUrl: "https://oshsinbot.herokuapp.com/incoming",
 });
 
 // Chat array
 
 const chatArray = [
-  { q: "Hi", a: "Hey, What's up ?" },
-  { q: "hi", a: "Hey, What's up ?" },
-  { q: "Hello", a: "Hey, What's up ?" },
-  { q: "hello", a: "Hey, What's up ?" },
+  {
+    q: "Hi",
+    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+  },
+  {
+    q: "hi",
+    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+  },
+  {
+    q: "Hello",
+    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+  },
+  {
+    q: "hello",
+    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+  },
 ];
 
 // Send the configuration to kik to update the bot with the information above
@@ -39,8 +51,7 @@ var answer_number = "";
 var answer_name = "";
 
 bot.onTextMessage((message) => {
-  let searchText = message.body;
-  console.log(searchText);
+  var chatResult = chatArray.find((x) => x.q === message.body);
 
   var options = {
     method: "GET",
@@ -184,6 +195,32 @@ bot.onTextMessage((message) => {
         }
       }
     );
+  } else if (chatResult) {
+    console.log(chatresult);
+    request.post(
+      {
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+        },
+        json: {
+          messages: [
+            {
+              body: chatResult.a,
+              to: message.from,
+              type: "text",
+            },
+          ],
+        },
+      },
+      function (err, res, body) {
+        if (err) {
+          console.log(`Error Info - ${err}`);
+        }
+        console.log(` ${res.statusCode} === ${res.statusMessage}`);
+      }
+    );
   } else {
     request.post(
       {
@@ -195,7 +232,7 @@ bot.onTextMessage((message) => {
         json: {
           messages: [
             {
-              body: "Hello" + "<br>" + message.body,
+              body: "I'm a bot , a stupid bot ....",
               to: message.from,
               type: "text",
             },
@@ -420,7 +457,7 @@ bot.onVideoMessage((message) => {
 
 let PORT = process.env.PORT || 8080;
 
-let server = http.createServer(bot.incoming()).listen(PORT, (err) => {
+http.createServer(bot.incoming()).listen(PORT, (err) => {
   if (err) {
     return console.log("something bad happened", err);
   }
