@@ -332,12 +332,12 @@ bot.onPictureMessage(async (message) => {
             {
               overlay: {
                 font_family: "Verdana",
-                font_size: 24,
+                font_size: 16,
                 // font_weight: "bold",
                 text: `${user.firstName} ${user.lastName} `,
               },
             },
-            { flags: "layer_apply", gravity: "north_east", y: "0.05" },
+            { flags: "layer_apply", gravity: "north_east", y: "0.03" },
           ],
         }
       );
