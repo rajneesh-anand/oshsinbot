@@ -5,10 +5,23 @@ const http = require("http");
 const Bot = require("@kikinteractive/kik");
 const request = require("request");
 const fs = require("fs");
+const axios = require("axios").default;
+const fetch = require("node-fetch");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
+const cloudinary = require("cloudinary");
+
+cloudinary.config({
+  cloud_name: "dlywo5mxn",
+  api_key: "436327778941833",
+  api_secret: "yZq5LpiY-YG_LJxixu3bX0e2euU",
+});
 
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+  // baseUrl: "https://cd752fc2bd53.ngrok.io/incoming",
   baseUrl: "https://oshsinbot.herokuapp.com/incoming",
 });
 
@@ -18,6 +31,27 @@ var answer_number = "";
 var answer_name = "";
 
 bot.onTextMessage((message) => {
+  let searchText = message.body;
+  console.log(searchText);
+
+  var options = {
+    method: "GET",
+    url: "https://shazam.p.rapidapi.com/search",
+    params: { term: searchText, locale: "en-US", offset: "0", limit: "5" },
+    headers: {
+      "x-rapidapi-key": "994294df9fmsh3b731c6db001238p1f81d5jsnf44698e29346",
+      "x-rapidapi-host": "shazam.p.rapidapi.com",
+    },
+  };
+
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
   if (
     message.body === "Dog" ||
     message.body === "DOG" ||
@@ -274,11 +308,77 @@ bot.onScanDataMessage((message) => {
   console.log(message.body);
 });
 
-bot.onPictureMessage((message) => {
-  console.log(`On picture message`);
+// On Picture request
 
-  request.post(
-    {
+const cloudinaryUpload = (file) => cloudinary.uploader.upload(file);
+
+bot.onPictureMessage(async (message) => {
+  // console.log(`On picture message`);
+
+  try {
+    const uploadResult = await cloudinaryUpload(message.picUrl);
+
+    bot.getUserProfile(message.from).then((user) => {
+      console.log(user);
+
+      const result = cloudinary.image(
+        `${uploadResult.public_id}.${uploadResult.format}`,
+        {
+          transformation: [
+            { effect: "cartoonify" },
+            { radius: "max" },
+            { effect: "outline:100", color: "lightblue" },
+            { background: "lightblue" },
+            { height: 300, crop: "scale" },
+            {
+              overlay: {
+                font_family: "impact",
+                font_size: 24,
+                // font_weight: "bold",
+                text: `${user.firstName} ${user.lastname} `,
+              },
+            },
+            { flags: "layer_apply", gravity: "north", y: "0.05" },
+          ],
+        }
+      );
+      // console.log(result);
+      const dom = new JSDOM(result, { includeNodeLocations: true });
+      // console.log(dom.window.document.querySelector("img").getAttribute("src"));
+      const cusImg = dom.window.document
+        .querySelector("img")
+        .getAttribute("src");
+
+      request.post(
+        {
+          url: "https://api.kik.com/v1/message",
+          auth: {
+            user: "oshsin",
+            pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+          },
+          json: {
+            messages: [
+              {
+                type: "picture",
+                to: message.from,
+                picUrl: cusImg,
+                // attribution: "camera",
+              },
+            ],
+          },
+        },
+        function (err, res, body) {
+          if (err) {
+            console.log(`Error Info - ${err}`);
+          }
+          console.log(` ${res.statusCode} === ${res.statusMessage}`);
+        }
+      );
+    });
+  } catch (error) {
+    console.log(error);
+
+    request.post({
       url: "https://api.kik.com/v1/message",
       auth: {
         user: "oshsin",
@@ -287,21 +387,15 @@ bot.onPictureMessage((message) => {
       json: {
         messages: [
           {
-            type: "picture",
+            body: "Oshsin not able to detect face. Please try another photo .",
             to: message.from,
-            picUrl: "http://i.imgur.com/raa59KY.png",
-            attribution: "camera",
+            type: "text",
+            // attribution: "camera",
           },
         ],
       },
-    },
-    function (err, res, body) {
-      if (err) {
-        console.log(`Error Info - ${err}`);
-      }
-      console.log(` ${res.statusCode} === ${res.statusMessage}`);
-    }
-  );
+    });
+  }
 });
 
 bot.onStickerMessage((message) => {
