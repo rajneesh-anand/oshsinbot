@@ -420,7 +420,7 @@ bot.onVideoMessage((message) => {
 
 let PORT = process.env.PORT || 8080;
 
-http.createServer(bot.incoming()).listen(PORT, (err) => {
+let server = http.createServer(bot.incoming()).listen(PORT, (err) => {
   if (err) {
     return console.log("something bad happened", err);
   }
