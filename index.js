@@ -334,7 +334,7 @@ bot.onPictureMessage(async (message) => {
                 font_family: "impact",
                 font_size: 24,
                 // font_weight: "bold",
-                text: `${user.firstName} ${user.lastname} `,
+                text: `${user.firstName} ${user.lastName} `,
               },
             },
             { flags: "layer_apply", gravity: "north", y: "0.05" },
