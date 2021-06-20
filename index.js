@@ -21,7 +21,7 @@ cloudinary.config({
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-  baseUrl: "https://oshsinbot.herokuapp.com/incoming",
+  baseUrl: "https://97f0f72210f3.ngrok.io/incoming",
 });
 
 // Chat array
@@ -43,6 +43,10 @@ const chatArray = [
     q: "hello",
     a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
   },
+  {
+    q: "Bye",
+    a: "Nice to talk to you. Stay Safe and Be Happy .. Bye & Take Care \n\nfrom OSHOA .. ",
+  },
 ];
 
 // Send the configuration to kik to update the bot with the information above
@@ -50,10 +54,11 @@ bot.updateBotConfiguration();
 
 var answer_number = "";
 var answer_name = "";
+var setTriviaFlag = false;
 
 bot.onTextMessage((message) => {
-  console.log(message.body);
   var chatResult = chatArray.find((x) => x.q === message.body);
+  console.log(chatResult);
 
   if (
     message.body === "Dog" ||
@@ -89,6 +94,7 @@ bot.onTextMessage((message) => {
     message.body === "MUSIC" ||
     message.body === "music"
   ) {
+    setTriviaFlag = true;
     let quiz_number = Math.floor(Math.random() * 6);
     let readQuiz = fs.readFileSync("music.json", "utf8");
     var jsonContent = JSON.parse(readQuiz);
@@ -121,6 +127,7 @@ bot.onTextMessage((message) => {
       }
     );
   } else if (message.body == answer_number || message.body === answer_name) {
+    setTriviaFlag = false;
     request.post(
       {
         url: "https://api.kik.com/v1/message",
@@ -149,35 +156,38 @@ bot.onTextMessage((message) => {
         }
       }
     );
-  } else if (message.body != "Bye" && message.body != answer_number) {
-    request.post(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              type: "video",
-              to: message.from,
-              videoUrl: "https://i.imgur.com/ED5InCq.mp4",
-              autoplay: true,
-              loop: true,
-              muted: false,
+  } else if (!chatResult) {
+    if (setTriviaFlag) {
+      request.post(
+        {
+          url: "https://api.kik.com/v1/message",
+          auth: {
+            user: "oshsin",
+            pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+          },
+          json: {
+            messages: [
+              {
+                type: "video",
+                to: message.from,
+                videoUrl: "https://i.imgur.com/ED5InCq.mp4",
+                autoplay: true,
+                loop: true,
+                muted: false,
 
-              //   attribution: "camera",
-            },
-          ],
+                //   attribution: "camera",
+              },
+            ],
+          },
         },
-      },
-      function (err, res, body) {
-        if (err) {
-          console.log(err);
+        function (err, res, body) {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
+    setTriviaFlag = false;
   } else if (chatResult) {
     console.log(chatresult);
     request.post(
@@ -215,7 +225,7 @@ bot.onTextMessage((message) => {
         json: {
           messages: [
             {
-              body: "I'm a bot , a stupid bot ....",
+              body: "I'm a Bot , a stupid bot .. Sometimes it's hard to understamd human instructions.",
               to: message.from,
               type: "text",
             },
