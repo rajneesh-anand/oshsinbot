@@ -1,5 +1,4 @@
 "use strict";
-
 const util = require("util");
 const http = require("http");
 const Bot = require("@kikinteractive/kik");
