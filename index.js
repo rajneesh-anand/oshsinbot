@@ -16,11 +16,13 @@ cloudinary.config({
   api_secret: "yZq5LpiY-YG_LJxixu3bX0e2euU",
 });
 
+// baseUrl: "https://cd752fc2bd53.ngrok.io/incoming",
+// baseUrl: "https://oshsinbot.herokuapp.com/incoming",
+
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-  // baseUrl: "https://cd752fc2bd53.ngrok.io/incoming",
-  baseUrl: "https://oshsinbot.herokuapp.com/incoming",
+  baseUrl: "https://kikbot-idleminds.azurewebsites.net/incoming",
 });
 
 // Send the configuration to kik to update the bot with the information above
