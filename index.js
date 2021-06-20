@@ -331,13 +331,13 @@ bot.onPictureMessage(async (message) => {
             { height: 300, crop: "scale" },
             {
               overlay: {
-                font_family: "impact",
+                font_family: "Verdana",
                 font_size: 24,
                 // font_weight: "bold",
                 text: `${user.firstName} ${user.lastName} `,
               },
             },
-            { flags: "layer_apply", gravity: "north", y: "0.05" },
+            { flags: "layer_apply", gravity: "north_east", y: "0.05" },
           ],
         }
       );
