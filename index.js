@@ -47,30 +47,13 @@ const chatArray = [
 
 // Send the configuration to kik to update the bot with the information above
 bot.updateBotConfiguration();
+
 var answer_number = "";
 var answer_name = "";
 
 bot.onTextMessage((message) => {
+  console.log(message.body);
   var chatResult = chatArray.find((x) => x.q === message.body);
-
-  var options = {
-    method: "GET",
-    url: "https://shazam.p.rapidapi.com/search",
-    params: { term: searchText, locale: "en-US", offset: "0", limit: "5" },
-    headers: {
-      "x-rapidapi-key": "994294df9fmsh3b731c6db001238p1f81d5jsnf44698e29346",
-      "x-rapidapi-host": "shazam.p.rapidapi.com",
-    },
-  };
-
-  axios
-    .request(options)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
 
   if (
     message.body === "Dog" ||
