@@ -21,7 +21,7 @@ cloudinary.config({
 let bot = new Bot({
   username: "oshsin", // The username you gave BotsWorth on Kik
   apiKey: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-  baseUrl: "https://97f0f72210f3.ngrok.io/incoming",
+  baseUrl: "https://oshsinbot.herokuapp.com/incoming",
 });
 
 // Chat array
@@ -29,23 +29,23 @@ let bot = new Bot({
 const chatArray = [
   {
     q: "Hi",
-    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+    a: "Hey, What's up ? I hope this message finds you well. Use the keyword Music for Music Trivia Quiz",
   },
   {
     q: "hi",
-    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+    a: "Hey, What's up ? I hope this message finds you well. Use the keyword Music for Music Trivia Quiz",
   },
   {
     q: "Hello",
-    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+    a: "Hey, What's up ? I hope this message finds you well. Use the keyword Music for Music Trivia Quiz",
   },
   {
     q: "hello",
-    a: "Hey, What's up ? I hope this message finds you well \n Use the keyword Music for Music Trivia Quiz",
+    a: "Hey, What's up ? I hope this message finds you well. Use the keyword Music for Music Trivia Quiz",
   },
   {
     q: "Bye",
-    a: "Nice to talk to you. Stay Safe and Be Happy .. Bye & Take Care \n\nfrom OSHOA .. ",
+    a: "It's nice to talk to you. Stay Safe and Be Happy .. Bye & Take Care \n\nfrom OSHOA .. ",
   },
 ];
 
@@ -127,7 +127,6 @@ bot.onTextMessage((message) => {
       }
     );
   } else if (message.body == answer_number || message.body === answer_name) {
-    setTriviaFlag = false;
     request.post(
       {
         url: "https://api.kik.com/v1/message",
@@ -143,7 +142,7 @@ bot.onTextMessage((message) => {
               videoUrl: "https://i.imgur.com/5VFTSZG.mp4",
               autoplay: true,
               loop: true,
-              muted: false,
+              muted: true,
 
               //   attribution: "camera",
             },
@@ -156,6 +155,7 @@ bot.onTextMessage((message) => {
         }
       }
     );
+    setTriviaFlag = false;
   } else if (!chatResult) {
     if (setTriviaFlag) {
       request.post(
@@ -173,7 +173,7 @@ bot.onTextMessage((message) => {
                 videoUrl: "https://i.imgur.com/ED5InCq.mp4",
                 autoplay: true,
                 loop: true,
-                muted: false,
+                muted: true,
 
                 //   attribution: "camera",
               },
@@ -186,10 +186,35 @@ bot.onTextMessage((message) => {
           }
         }
       );
+    } else {
+      request.post(
+        {
+          url: "https://api.kik.com/v1/message",
+          auth: {
+            user: "oshsin",
+            pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+          },
+          json: {
+            messages: [
+              {
+                body: "I'm a Bot , a stupid bot .. Sometimes it's hard to understamd human instructions.",
+                to: message.from,
+                type: "text",
+              },
+            ],
+          },
+        },
+        function (err, res, body) {
+          if (err) {
+            console.log(`Error Info - ${err}`);
+          }
+          console.log(` ${res.statusCode} === ${res.statusMessage}`);
+        }
+      );
     }
     setTriviaFlag = false;
-  } else if (chatResult) {
-    console.log(chatresult);
+  } else {
+    console.log(chatResult);
     request.post(
       {
         url: "https://api.kik.com/v1/message",
@@ -201,31 +226,6 @@ bot.onTextMessage((message) => {
           messages: [
             {
               body: chatResult.a,
-              to: message.from,
-              type: "text",
-            },
-          ],
-        },
-      },
-      function (err, res, body) {
-        if (err) {
-          console.log(`Error Info - ${err}`);
-        }
-        console.log(` ${res.statusCode} === ${res.statusMessage}`);
-      }
-    );
-  } else {
-    request.post(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              body: "I'm a Bot , a stupid bot .. Sometimes it's hard to understamd human instructions.",
               to: message.from,
               type: "text",
             },
