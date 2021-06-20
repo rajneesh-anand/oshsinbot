@@ -6,7 +6,6 @@ const Bot = require("@kikinteractive/kik");
 const request = require("request");
 const fs = require("fs");
 const axios = require("axios").default;
-const fetch = require("node-fetch");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
