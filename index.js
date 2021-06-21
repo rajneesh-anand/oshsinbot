@@ -248,28 +248,24 @@ bot.onScanDataMessage((message) => {
   console.log(message.id);
   console.log(message.data);
 
-  bot.getUserProfile(message.from).then((user) => {
-    try {
-      request.post({
+  // bot.getUserProfile(message.from).then((user) => {
+  try {
+    request.get(
+      {
         url: "https://api.kik.com/v1/message",
         auth: {
           user: "oshsin",
           pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
         },
-        json: {
-          messages: [
-            {
-              type: "scan-data",
-              to: message.from,
-              body: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
-            },
-          ],
-        },
-      });
-    } catch (error) {
-      console.log(`on scan data error ---------- > ${error}`);
-    }
-  });
+      },
+      (response) => {
+        console.log(`scan data response ----> ${response}`);
+      }
+    );
+  } catch (error) {
+    console.log(`on scan data error ---------- > ${error}`);
+  }
+  // });
 });
 
 // On Picture request
@@ -373,24 +369,18 @@ bot.onPictureMessage(async (message) => {
 bot.onStickerMessage((message) => {
   console.log("on sticker request ---------- >");
   try {
-    request.post({
-      url: "https://api.kik.com/v1/message",
-      auth: {
-        user: "oshsin",
-        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+    request.get(
+      {
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+        },
       },
-      json: {
-        messages: [
-          {
-            type: "sticker",
-            to: message.from,
-            stickerPackId: "memes",
-            stickerUrl:
-              "http://cards-sticker-dev.herokuapp.com/stickers/memes/okay.png",
-          },
-        ],
-      },
-    });
+      (response) => {
+        console.log(`sticker response ----> ${response}`);
+      }
+    );
   } catch (error) {
     console.log(`on sticker error ---------- > ${error}`);
   }
@@ -433,28 +423,28 @@ bot.onLinkMessage((message) => {
 bot.onStartChattingMessage((message) => {
   console.log("on start chatting request ---------- >");
 
-  bot.getUserProfile(message.from).then((user) => {
-    try {
-      request.post({
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              type: "start-chatting",
-              to: message.from,
-              text: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
-            },
-          ],
-        },
-      });
-    } catch (error) {
-      console.log(`on start chatting error ---------- > ${error}`);
-    }
-  });
+  // bot.getUserProfile(message.from).then((user) => {
+  try {
+    request.post({
+      url: "https://api.kik.com/v1/message",
+      auth: {
+        user: "oshsin",
+        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+      },
+      json: {
+        messages: [
+          {
+            type: "start-chatting",
+            to: message.from,
+            body: `Nice to meet you. I hope this message finds you well :)`,
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    console.log(`on start chatting error ---------- > ${error}`);
+  }
+  // });
 });
 
 bot.onVideoMessage((message) => {
