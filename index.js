@@ -244,6 +244,9 @@ bot.onTextMessage((message) => {
 
 bot.onScanDataMessage((message) => {
   console.log("on scan data request ---------- >");
+  console.log(message.from);
+  console.log(message.id);
+  console.log(message.data);
 
   bot.getUserProfile(message.from).then((user) => {
     try {
@@ -258,7 +261,7 @@ bot.onScanDataMessage((message) => {
             {
               type: "scan-data",
               to: message.from,
-              text: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
+              body: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
             },
           ],
         },
@@ -277,54 +280,72 @@ bot.onPictureMessage(async (message) => {
   console.log(`on picture request ---------- > `);
 
   try {
-    const uploadResult = await cloudinaryUpload(message.picUrl);
+    // const uploadResult = await cloudinaryUpload(message.picUrl);
 
-    bot.getUserProfile(message.from).then((user) => {
-      const result = cloudinary.image(
-        `${uploadResult.public_id}.${uploadResult.format}`,
-        {
-          transformation: [
-            { effect: "cartoonify" },
-            { radius: "max" },
-            { effect: "outline:100", color: "lightblue" },
-            { background: "lightblue" },
-            { height: 300, crop: "scale" },
-            {
-              overlay: {
-                font_family: "Verdana",
-                font_size: 16,
-                // font_weight: "bold",
-                text: `${user.firstName} ${user.lastName} `,
-              },
-            },
-            { flags: "layer_apply", gravity: "north_east", y: "0.03" },
-          ],
-        }
-      );
-      // console.log(result);
-      const dom = new JSDOM(result, { includeNodeLocations: true });
-      // console.log(dom.window.document.querySelector("img").getAttribute("src"));
-      const cusImg = dom.window.document
-        .querySelector("img")
-        .getAttribute("src");
+    // bot.getUserProfile(message.from).then((user) => {
+    //   const result = cloudinary.image(
+    //     `${uploadResult.public_id}.${uploadResult.format}`,
+    //     {
+    //       transformation: [
+    //         { effect: "cartoonify" },
+    //         { radius: "max" },
+    //         { effect: "outline:100", color: "lightblue" },
+    //         { background: "lightblue" },
+    //         { height: 300, crop: "scale" },
+    //         {
+    //           overlay: {
+    //             font_family: "Verdana",
+    //             font_size: 16,
+    //             // font_weight: "bold",
+    //             text: `${user.firstName} ${user.lastName} `,
+    //           },
+    //         },
+    //         { flags: "layer_apply", gravity: "north_east", y: "0.03" },
+    //       ],
+    //     }
+    //   );
+    //   // console.log(result);
+    //   const dom = new JSDOM(result, { includeNodeLocations: true });
+    //   // console.log(dom.window.document.querySelector("img").getAttribute("src"));
+    //   const cusImg = dom.window.document
+    //     .querySelector("img")
+    //     .getAttribute("src");
 
-      request.post({
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
-        json: {
-          messages: [
-            {
-              type: "picture",
-              to: message.from,
-              picUrl: cusImg,
-              // attribution: "camera",
-            },
-          ],
-        },
-      });
+    //   request.post({
+    //     url: "https://api.kik.com/v1/message",
+    //     auth: {
+    //       user: "oshsin",
+    //       pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+    //     },
+    //     json: {
+    //       messages: [
+    //         {
+    //           type: "picture",
+    //           to: message.from,
+    //           picUrl: cusImg,
+    //           // attribution: "camera",
+    //         },
+    //       ],
+    //     },
+    //   });
+    // });
+
+    request.post({
+      url: "https://api.kik.com/v1/message",
+      auth: {
+        user: "oshsin",
+        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+      },
+      json: {
+        messages: [
+          {
+            body: "Oshsin not able to detect face. Please try another photo .",
+            to: message.from,
+            type: "text",
+            // attribution: "camera",
+          },
+        ],
+      },
     });
   } catch (error) {
     console.log(`on picture ---------- > ${error}`);
