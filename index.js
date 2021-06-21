@@ -243,8 +243,30 @@ bot.onTextMessage((message) => {
 });
 
 bot.onScanDataMessage((message) => {
-  message.reply(message.body);
-  console.log(message.body);
+  console.log("on scan data request ---------- >");
+
+  bot.getUserProfile(message.from).then((user) => {
+    try {
+      request.post({
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+        },
+        json: {
+          messages: [
+            {
+              type: "scan-data",
+              to: message.from,
+              text: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
+            },
+          ],
+        },
+      });
+    } catch (error) {
+      console.log(`on scan data error ---------- > ${error}`);
+    }
+  });
 });
 
 // On Picture request
@@ -252,14 +274,12 @@ bot.onScanDataMessage((message) => {
 const cloudinaryUpload = (file) => cloudinary.uploader.upload(file);
 
 bot.onPictureMessage(async (message) => {
-  // console.log(`On picture message`);
+  console.log(`on picture request ---------- > `);
 
   try {
     const uploadResult = await cloudinaryUpload(message.picUrl);
 
     bot.getUserProfile(message.from).then((user) => {
-      console.log(user);
-
       const result = cloudinary.image(
         `${uploadResult.public_id}.${uploadResult.format}`,
         {
@@ -288,34 +308,26 @@ bot.onPictureMessage(async (message) => {
         .querySelector("img")
         .getAttribute("src");
 
-      request.post(
-        {
-          url: "https://api.kik.com/v1/message",
-          auth: {
-            user: "oshsin",
-            pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-          },
-          json: {
-            messages: [
-              {
-                type: "picture",
-                to: message.from,
-                picUrl: cusImg,
-                // attribution: "camera",
-              },
-            ],
-          },
+      request.post({
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
         },
-        function (err, res, body) {
-          if (err) {
-            console.log(`Error Info - ${err}`);
-          }
-          console.log(` ${res.statusCode} === ${res.statusMessage}`);
-        }
-      );
+        json: {
+          messages: [
+            {
+              type: "picture",
+              to: message.from,
+              picUrl: cusImg,
+              // attribution: "camera",
+            },
+          ],
+        },
+      });
     });
   } catch (error) {
-    console.log(error);
+    console.log(`on picture ---------- > ${error}`);
 
     request.post({
       url: "https://api.kik.com/v1/message",
@@ -338,10 +350,9 @@ bot.onPictureMessage(async (message) => {
 });
 
 bot.onStickerMessage((message) => {
-  console.log(`On sticker message`);
-
-  request.post(
-    {
+  console.log("on sticker request ---------- >");
+  try {
+    request.post({
       url: "https://api.kik.com/v1/message",
       auth: {
         user: "oshsin",
@@ -358,21 +369,17 @@ bot.onStickerMessage((message) => {
           },
         ],
       },
-    },
-    function (err, res, body) {
-      if (err) {
-        console.log(`Error Info - ${err}`);
-      }
-      console.log(` ${res.statusCode} === ${res.statusMessage}`);
-    }
-  );
+    });
+  } catch (error) {
+    console.log(`on sticker error ---------- > ${error}`);
+  }
 });
 
 bot.onLinkMessage((message) => {
-  console.log(`On link message`);
+  console.log("on link request ---------- >");
 
-  request.post(
-    {
+  try {
+    request.post({
       url: "https://api.kik.com/v1/message",
       auth: {
         user: "oshsin",
@@ -385,40 +392,52 @@ bot.onLinkMessage((message) => {
             to: message.from,
             title: "My Webpage",
             text: "Some text to display",
-            url: "https://www.bbc.com/news/world-us-canada-57194883",
-            picUrl:
-              "https://ichef.bbci.co.uk/news/976/cpsprodpb/C865/production/_118610315_wvtf1.jpg",
+            url: "http://google.com",
+            picUrl: "http://i.imgur.com/raa59KY.png",
             attribution: {
               name: "My App",
-              iconUrl:
-                "https://ichef.bbci.co.uk/news/976/cpsprodpb/C865/production/_118610315_wvtf1.jpg",
+              iconUrl: "http://i.imgur.com/raa59KY.png",
             },
             noForward: true,
             kikJsData: { key: "value" },
           },
         ],
       },
-    },
-    function (err, res, body) {
-      if (err) {
-        console.log(`Error Info - ${err}`);
-      }
-      console.log(` ${res.statusCode} === ${res.statusMessage}`);
-    }
-  );
+    });
+  } catch (error) {
+    console.log(`on link error ---------- > ${error}`);
+  }
 });
 
 bot.onStartChattingMessage((message) => {
+  console.log("on start chatting request ---------- >");
+
   bot.getUserProfile(message.from).then((user) => {
-    message.reply(
-      `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well. Send me a message and I'll send it right back.`
-    );
+    try {
+      request.post({
+        url: "https://api.kik.com/v1/message",
+        auth: {
+          user: "oshsin",
+          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+        },
+        json: {
+          messages: [
+            {
+              type: "start-chatting",
+              to: message.from,
+              text: `Hey ${user.firstName}. Nice to meet you. I hope this message finds you well :)`,
+            },
+          ],
+        },
+      });
+    } catch (error) {
+      console.log(`on start chatting error ---------- > ${error}`);
+    }
   });
 });
 
 bot.onVideoMessage((message) => {
-  console.log(`On video message`);
-
+  console.log("on video message request ---------- >");
   request.post(
     {
       url: "https://api.kik.com/v1/message",
