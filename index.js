@@ -245,20 +245,24 @@ bot.onTextMessage((message) => {
 bot.onScanDataMessage((message) => {
   console.log(`on start chatting request ---------- > ${message}`);
 
-  // bot.getUserProfile(message.from).then((user) => {
   try {
-    request.get(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
+    request.get({
+      url: "https://api.kik.com/v1/message",
+      auth: {
+        user: "oshsin",
+        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
       },
-      (response) => {
-        console.log(`scan data response ----> ${response}`);
-      }
-    );
+
+      json: {
+        messages: [
+          {
+            type: "text",
+            body: "Nice to meet you. I hope this message finds you well :)",
+            to: message.from,
+          },
+        ],
+      },
+    });
   } catch (error) {
     console.log(`on scan data error ---------- > ${error}`);
   }
@@ -366,18 +370,22 @@ bot.onPictureMessage(async (message) => {
 bot.onStickerMessage((message) => {
   console.log(`on start chatting request ---------- > ${message}`);
   try {
-    request.get(
-      {
-        url: "https://api.kik.com/v1/message",
-        auth: {
-          user: "oshsin",
-          pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-        },
+    request.get({
+      url: "https://api.kik.com/v1/message",
+      auth: {
+        user: "oshsin",
+        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
       },
-      (response) => {
-        console.log(`sticker response ----> ${response}`);
-      }
-    );
+      json: {
+        messages: [
+          {
+            type: "text",
+            body: "Nice to meet you. I hope this message finds you well :)",
+            to: message.from,
+          },
+        ],
+      },
+    });
   } catch (error) {
     console.log(`on sticker error ---------- > ${error}`);
   }
@@ -429,7 +437,7 @@ bot.onStartChattingMessage((message) => {
       json: {
         messages: [
           {
-            type: "start-chatting",
+            type: "text",
             body: "Nice to meet you. I hope this message finds you well :)",
             to: message.from,
             chatId: message.chatId,
