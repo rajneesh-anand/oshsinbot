@@ -243,10 +243,7 @@ bot.onTextMessage((message) => {
 });
 
 bot.onScanDataMessage((message) => {
-  console.log("on scan data request ---------- >");
-  console.log(message.from);
-  console.log(message.id);
-  console.log(message.data);
+  console.log(`on start chatting request ---------- > ${message}`);
 
   // bot.getUserProfile(message.from).then((user) => {
   try {
@@ -367,7 +364,7 @@ bot.onPictureMessage(async (message) => {
 });
 
 bot.onStickerMessage((message) => {
-  console.log("on sticker request ---------- >");
+  console.log(`on start chatting request ---------- > ${message}`);
   try {
     request.get(
       {
