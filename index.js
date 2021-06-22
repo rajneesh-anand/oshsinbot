@@ -420,37 +420,29 @@ bot.onLinkMessage((message) => {
   }
 });
 
-// bot.onStartChattingMessage((message) => {
-//   console.log("on start chatting request ---------- >");
-
-//   // bot.getUserProfile(message.from).then((user) => {
-//   try {
-//     request.post({
-//       url: "https://api.kik.com/v1/message",
-//       auth: {
-//         user: "oshsin",
-//         pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
-//       },
-//       json: {
-//         messages: [
-//           {
-//             type: "start-chatting",
-//             to: message.from,
-//             body: `Nice to meet you. I hope this message finds you well :)`,
-//           },
-//         ],
-//       },
-//     });
-//   } catch (error) {
-//     console.log(`on start chatting error ---------- > ${error}`);
-//   }
-//   // });
-// });
-
 bot.onStartChattingMessage((message) => {
-  bot.getUserProfile(message.from).then((user) => {
-    message.reply(`Hey ${user.firstName}!`);
-  });
+  console.log(`on start chatting request ---------- > ${message}`);
+  try {
+    request.post({
+      url: "https://api.kik.com/v1/message",
+      auth: {
+        user: "oshsin",
+        pass: "d15aa586-a0d7-45a7-b0a2-5e343ba36b77",
+      },
+      json: {
+        messages: [
+          {
+            type: "start-chatting",
+            body: "Nice to meet you. I hope this message finds you well :)",
+            to: message.from,
+            chatId: message.chatId,
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    console.log(`on start chatting error ---------- > ${error}`);
+  }
 });
 
 bot.onVideoMessage((message) => {
